@@ -11,14 +11,18 @@ El sistema está diseñado para gestionar recursos digitales, controlar préstam
 biblioteca-frontend/
 │
 ├── index.html # Página principal (login gótico)
+
 ├── css/
 │ └── styles.css # Estilos personalizados
+
 ├── js/
 │ └── main.js # Lógica JS (futura validación o animación)
+
 ├── img/
 │ ├── fondo-biblioteca.jpg # Fondo gótico
 │ ├── vela1.gif # Animación de vela izquierda
 │ └── vela2.gif # Animación de vela derecha
+
 ├── fonts/
 │ └── gothic-font.ttf # (Opcional) Fuente gótica personalizada
 └── README.md # Este archivo
