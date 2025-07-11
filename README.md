@@ -31,6 +31,9 @@ biblioteca-frontend/
 🔐 **Página de Login** inspirada en una biblioteca antigua, con estilo gótico y animaciones de velas a los costados.
 
 > La interfaz será progresivamente integrada con el backend construido en Python/Django.
+><img width="1245" height="1079" alt="1" src="https://github.com/user-attachments/assets/29de2d5e-7a80-4ae5-adac-7ec585005841" />
+
+> 
 
 ---
 
