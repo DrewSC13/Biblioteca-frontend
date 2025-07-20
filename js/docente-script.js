@@ -10,7 +10,7 @@ const CONFIG = {
         catalogo: '/libros',
         actualizarPerfil: '/docente/actualizar'
     },
-    DEFAULT_AVATAR: 'img/avatar-docente-default.jpg'
+    DEFAULT_AVATAR: 'img/avatar-docente.jpg'
 };
 
 // Estado de la aplicación
@@ -62,6 +62,9 @@ const DOM = {
 
     // Reservas
     gridReservas: document.getElementById('gridReservas'),
+
+    // Descargas
+    descargasRecientes: document.getElementById('descargasRecientes'),
 
     // Perfil
     avatarPreview: document.getElementById('avatarPreview'),
@@ -143,13 +146,21 @@ async function loadAllData() {
  */
 async function loadDocenteData() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.docente}`);
-        if (!response.ok) throw new Error('Error al cargar datos del docente');
+        // Datos de ejemplo basados en tu base de datos
+        const docenteEjemplo = {
+            id_usuario: 9,
+            nombre: "Camila Morales",
+            apellido: "Morales",
+            telefono: "789123654",
+            correo: "camila.morales@uni.edu",
+            fecha_nacimiento: "1999-02-02",
+            fecha_registro: "2025-07-20",
+            especialidad: "Inteligencia Artificial",
+            grado_academico: "PhD",
+            carrera: "Ingeniería de Sistemas"
+        };
 
-        const data = await response.json();
-        if (!data || !data.nombre) throw new Error('Datos del docente inválidos');
-
-        APP_STATE.docente = data;
+        APP_STATE.docente = docenteEjemplo;
     } catch (error) {
         console.error('Error al cargar datos del docente:', error);
         // Datos de ejemplo como fallback
@@ -168,11 +179,44 @@ async function loadDocenteData() {
  */
 async function loadLibrosRecomendados() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.libros}`);
-        if (!response.ok) throw new Error('Error al cargar libros recomendados');
+        // Libros recomendados basados en la especialidad del docente
+        const librosRecomendados = [
+            {
+                id_libro: 5,
+                titulo: "Cien Años de Soledad",
+                autor: "Gabriel García Márquez",
+                editorial: "Sudamericana",
+                formato: "PDF",
+                estado: "Disponible",
+                categoria: "Novela",
+                anio_publicacion: 1967,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 11,
+                titulo: "Crimen y Castigo",
+                autor: "Fiódor Dostoyevski",
+                editorial: "Penguin",
+                formato: "PDF",
+                estado: "Disponible",
+                categoria: "Novela",
+                anio_publicacion: 1866,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 21,
+                titulo: "El nombre de la rosa",
+                autor: "Umberto Eco",
+                editorial: "Bompiani",
+                formato: "EPUB",
+                estado: "Disponible",
+                categoria: "Misterio",
+                anio_publicacion: 1980,
+                tipo_acceso: "derechos_reservados"
+            }
+        ];
 
-        const data = await response.json();
-        APP_STATE.libros = Array.isArray(data) ? data : [];
+        APP_STATE.libros = librosRecomendados;
     } catch (error) {
         console.error('Error al cargar libros recomendados:', error);
         APP_STATE.libros = [];
@@ -184,17 +228,65 @@ async function loadLibrosRecomendados() {
  */
 async function loadPrestamos() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.prestamos}`);
-        if (!response.ok) throw new Error('Error al cargar préstamos');
-
-        const data = await response.json();
-
-        // Organizar préstamos por estado
-        APP_STATE.prestamos = {
-            activos: Array.isArray(data.activos) ? data.activos : [],
-            historial: Array.isArray(data.historial) ? data.historial : [],
-            vencidos: Array.isArray(data.vencidos) ? data.vencidos : []
+        // Datos de ejemplo para préstamos
+        const prestamosEjemplo = {
+            activos: [
+                {
+                    id: 1,
+                    libroId: 17,
+                    titulo: "En busca del tiempo perdido",
+                    fechaPrestamo: "2025-07-20",
+                    fechaDevolucion: null,
+                    dias_prestamo: 5,
+                    plazo_maximo: 7,
+                    estado: "activo",
+                    vencido: false,
+                    devuelto: false
+                },
+                {
+                    id: 2,
+                    libroId: 18,
+                    titulo: "Matar a un ruiseñor",
+                    fechaPrestamo: "2025-07-20",
+                    fechaDevolucion: null,
+                    dias_prestamo: 10,
+                    plazo_maximo: 15,
+                    estado: "activo",
+                    vencido: false,
+                    devuelto: false
+                }
+            ],
+            historial: [
+                {
+                    id: 3,
+                    libroId: 16,
+                    titulo: "Rayuela",
+                    fechaPrestamo: "2025-07-20",
+                    fechaDevolucion: "2025-07-28",
+                    dias_prestamo: 7,
+                    plazo_maximo: 10,
+                    estado: "devuelto",
+                    vencido: false,
+                    devuelto: true
+                }
+            ],
+            vencidos: [
+                {
+                    id: 4,
+                    libroId: 20,
+                    titulo: "Ficciones",
+                    fechaPrestamo: "2025-07-20",
+                    fechaDevolucion: null,
+                    dias_prestamo: 8,
+                    plazo_maximo: 10,
+                    estado: "vencido",
+                    vencido: true,
+                    devuelto: false
+                }
+            ]
         };
+
+        APP_STATE.prestamos = prestamosEjemplo;
 
         // Actualizar contador
         if (DOM.contadorPrestamos) {
@@ -215,17 +307,40 @@ async function loadPrestamos() {
  */
 async function loadReservas() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.reservas}`);
-        if (!response.ok) throw new Error('Error al cargar reservas');
-
-        const data = await response.json();
-
-        // Organizar reservas por estado
-        APP_STATE.reservas = {
-            pendientes: Array.isArray(data.pendientes) ? data.pendientes : [],
-            completadas: Array.isArray(data.completadas) ? data.completadas : [],
-            canceladas: Array.isArray(data.canceladas) ? data.canceladas : []
+        // Datos de ejemplo para reservas
+        const reservasEjemplo = {
+            pendientes: [
+                {
+                    id: 1,
+                    libroId: 6,
+                    titulo: "1984",
+                    fechaReserva: "2025-07-20",
+                    fechaDisponible: "2025-07-25",
+                    estado: "pendiente"
+                },
+                {
+                    id: 2,
+                    libroId: 10,
+                    titulo: "Orgullo y Prejuicio",
+                    fechaReserva: "2025-07-20",
+                    fechaDisponible: "2025-07-22",
+                    estado: "pendiente"
+                }
+            ],
+            completadas: [
+                {
+                    id: 3,
+                    libroId: 8,
+                    titulo: "La Odisea",
+                    fechaReserva: "2025-07-15",
+                    fechaDisponible: "2025-07-18",
+                    estado: "completada"
+                }
+            ],
+            canceladas: []
         };
+
+        APP_STATE.reservas = reservasEjemplo;
 
         // Actualizar contador
         if (DOM.contadorReservas) {
@@ -246,11 +361,33 @@ async function loadReservas() {
  */
 async function loadDescargasRecientes() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.descargas}`);
-        if (!response.ok) throw new Error('Error al cargar descargas recientes');
+        // Datos de ejemplo para descargas
+        const descargasEjemplo = [
+            {
+                id: 1,
+                libroId: 5,
+                titulo: "Cien Años de Soledad",
+                fecha: "2025-07-20",
+                formato: "PDF"
+            },
+            {
+                id: 2,
+                libroId: 7,
+                titulo: "Don Quijote de la Mancha",
+                fecha: "2025-07-18",
+                formato: "PDF"
+            },
+            {
+                id: 3,
+                libroId: 9,
+                titulo: "La Divina Comedia",
+                fecha: "2025-07-15",
+                formato: "PDF"
+            }
+        ];
 
-        const data = await response.json();
-        APP_STATE.descargas = Array.isArray(data) ? data : [];
+        APP_STATE.descargas = descargasEjemplo;
+        console.log('Descargas cargadas:', APP_STATE.descargas); // Verificación
     } catch (error) {
         console.error('Error al cargar descargas recientes:', error);
         APP_STATE.descargas = [];
@@ -262,11 +399,77 @@ async function loadDescargasRecientes() {
  */
 async function loadCatalogo() {
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.catalogo}`);
-        if (!response.ok) throw new Error('Error al cargar catálogo');
+        // Catálogo completo basado en tu base de datos
+        const catalogoEjemplo = [
+            {
+                id_libro: 5,
+                titulo: "Cien Años de Soledad",
+                autor: "Gabriel García Márquez",
+                editorial: "Sudamericana",
+                formato: "PDF",
+                estado: "Disponible",
+                categoria: "Novela",
+                anio_publicacion: 1967,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 6,
+                titulo: "1984",
+                autor: "George Orwell",
+                editorial: "Secker & Warburg",
+                formato: "EPUB",
+                estado: "Prestado",
+                categoria: "Distopía",
+                anio_publicacion: 1949,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 7,
+                titulo: "Don Quijote de la Mancha",
+                autor: "Miguel de Cervantes",
+                editorial: "Francisco de Robles",
+                formato: "PDF",
+                estado: "Disponible",
+                categoria: "Novela",
+                anio_publicacion: 1605,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 8,
+                titulo: "La Odisea",
+                autor: "Homero",
+                editorial: "Gredos",
+                formato: "PDF",
+                estado: "Disponible",
+                categoria: "Épico",
+                anio_publicacion: -800,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 9,
+                titulo: "La Divina Comedia",
+                autor: "Dante Alighieri",
+                editorial: "Mondadori",
+                formato: "PDF",
+                estado: "Reservado",
+                categoria: "Poesía",
+                anio_publicacion: 1320,
+                tipo_acceso: "libre"
+            },
+            {
+                id_libro: 10,
+                titulo: "Orgullo y Prejuicio",
+                autor: "Jane Austen",
+                editorial: "T. Egerton",
+                formato: "EPUB",
+                estado: "Disponible",
+                categoria: "Romance",
+                anio_publicacion: 1813,
+                tipo_acceso: "libre"
+            }
+        ];
 
-        const data = await response.json();
-        APP_STATE.catalogo = Array.isArray(data) ? data : [];
+        APP_STATE.catalogo = catalogoEjemplo;
         renderCatalogo();
     } catch (error) {
         console.error('Error al cargar catálogo:', error);
@@ -285,14 +488,14 @@ async function buscarLibros() {
     try {
         showLoadingState();
 
-        // Simular búsqueda con filtrado local (en producción sería una llamada API)
+        // Simular búsqueda con filtrado local
         let resultados = [...APP_STATE.catalogo];
 
         // Aplicar filtros
         if (termino) {
             resultados = resultados.filter(libro =>
                 libro.titulo.toLowerCase().includes(termino) ||
-                libro.autor.toLowerCase().includes(termino) ||
+                (libro.autor && libro.autor.toLowerCase().includes(termino)) ||
                 libro.categoria.toLowerCase().includes(termino)
             );
         }
@@ -307,10 +510,10 @@ async function buscarLibros() {
                 resultados.sort((a, b) => a.titulo.localeCompare(b.titulo));
                 break;
             case 'autor':
-                resultados.sort((a, b) => a.autor.localeCompare(b.autor));
+                resultados.sort((a, b) => (a.autor || '').localeCompare(b.autor || ''));
                 break;
             case 'fecha':
-                resultados.sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
+                resultados.sort((a, b) => (b.anio_publicacion || 0) - (a.anio_publicacion || 0));
                 break;
         }
 
@@ -336,7 +539,7 @@ function renderAll() {
     renderLibrosRecomendados();
     renderPrestamos('activos');
     renderReservas('pendientes');
-    renderDescargasRecientes();
+    renderDescargas();
 }
 
 /**
@@ -345,11 +548,11 @@ function renderAll() {
 function renderDocenteData() {
     if (!APP_STATE.docente) return;
 
-    const { nombre, especialidad, grado, carrera } = APP_STATE.docente;
+    const { nombre, especialidad, grado_academico, carrera } = APP_STATE.docente;
 
     DOM.nombreDocente.textContent = nombre || 'Docente';
     DOM.especialidadDocente.textContent = especialidad || 'Especialidad no disponible';
-    DOM.gradoDocente.textContent = grado || 'Grado no disponible';
+    DOM.gradoDocente.textContent = grado_academico || 'Grado no disponible';
     DOM.carreraDocente.textContent = carrera || 'Carrera no disponible';
 }
 
@@ -403,13 +606,65 @@ function createBookCard(libro) {
             <h3>${libro.titulo || 'Título no disponible'}</h3>
             <p>${libro.autor || 'Autor desconocido'}</p>
             <span class="book-category">${libro.categoria || 'Sin categoría'}</span>
-            <button class="gothic-button" data-action="view-book" data-id="${libro.id}">
+            <button class="gothic-button" data-action="view-book" data-id="${libro.id_libro}">
                 <i class="fas fa-eye"></i> Ver
             </button>
         </div>
     `;
     return card;
 }
+
+/**
+ * Renderizar descargas
+ */
+ function renderDescargas() {
+     // Verificación exhaustiva
+     const container = document.getElementById('descargasRecientes');
+     if (!container) {
+         console.error('Error crítico: No se encontró el contenedor de descargas');
+         return;
+     }
+
+     console.log('Datos de descargas:', APP_STATE.descargas);
+
+     container.innerHTML = '';
+
+     if (!APP_STATE.descargas || APP_STATE.descargas.length === 0) {
+         container.innerHTML = '<p class="no-data">No tienes descargas recientes</p>';
+         return;
+     }
+
+     APP_STATE.descargas.forEach(descarga => {
+         const item = document.createElement('div');
+         item.className = 'download-item';
+
+         // Verifica cada propiedad para evitar errores
+         const titulo = descarga.titulo || 'Archivo no disponible';
+         const fecha = formatDate(descarga.fecha) || '--';
+         const formato = descarga.formato || '--';
+         const libroId = descarga.libroId || '';
+
+         item.innerHTML = `
+             <div class="download-icon">
+                 <i class="fas fa-file-${formato.toLowerCase() === 'pdf' ? 'pdf' : 'download'}"></i>
+             </div>
+             <div class="download-info">
+                 <h4>${titulo}</h4>
+                 <p>Descargado el ${fecha}</p>
+                 <p>Formato: ${formato}</p>
+             </div>
+             <div class="download-actions">
+                 <button class="gothic-button-small" data-action="download-again" data-id="${libroId}">
+                     <i class="fas fa-download"></i> Descargar
+                 </button>
+                 <button class="gothic-button-small" data-action="view-book" data-id="${libroId}">
+                     <i class="fas fa-eye"></i> Ver
+                 </button>
+             </div>
+         `;
+         container.appendChild(item);
+     });
+ }
 
 /**
  * Renderizar préstamos según tipo
@@ -516,36 +771,6 @@ function filtrarReservas(tipo) {
 }
 
 /**
- * Renderizar descargas recientes
- */
-function renderDescargasRecientes() {
-    if (!DOM.descargasRecientes) return;
-
-    DOM.descargasRecientes.innerHTML = '';
-
-    if (APP_STATE.descargas.length === 0) {
-        DOM.descargasRecientes.innerHTML = '<p class="no-data">No hay descargas recientes</p>';
-        return;
-    }
-
-    APP_STATE.descargas.forEach(descarga => {
-        const item = document.createElement('div');
-        item.className = 'download-item';
-        item.innerHTML = `
-            <i class="fas fa-file-pdf"></i>
-            <div class="download-info">
-                <h4>${descarga.titulo || 'Archivo no disponible'}</h4>
-                <p>Descargado el ${formatDate(descarga.fecha) || '--'}</p>
-            </div>
-            <button class="gothic-button-small" data-action="download-again" data-id="${descarga.id}">
-                <i class="fas fa-download"></i> Descargar
-            </button>
-        `;
-        DOM.descargasRecientes.appendChild(item);
-    });
-}
-
-/**
  * Configurar event listeners
  */
 function setupEventListeners() {
@@ -606,6 +831,20 @@ function setupEventListeners() {
         DOM.filtroCategoria.addEventListener('change', buscarLibros);
         DOM.filtroOrden.addEventListener('change', buscarLibros);
     }
+
+    // Cerrar modales al hacer clic fuera del contenido
+    window.addEventListener('click', function(event) {
+        const modalReserva = document.getElementById('modalReserva');
+        const modalPrestamo = document.getElementById('modalPrestamo');
+
+        if (event.target === modalReserva) {
+            cerrarModalReserva();
+        }
+
+        if (event.target === modalPrestamo) {
+            cerrarModalPrestamo();
+        }
+    });
 }
 
 /**
@@ -707,6 +946,10 @@ function cargarSeccion(seccion) {
             }
         }
 
+        if (seccion === 'descargas') {
+            renderDescargas();
+        }
+
         seccionElement.style.display = 'block';
         botonElement.classList.add('active');
 
@@ -722,6 +965,167 @@ function cargarSeccion(seccion) {
     // Cerrar el sidebar en móviles
     if (window.innerWidth < 1024) {
         toggleSidebar();
+    }
+}
+
+/**
+ * Mostrar modal de reserva
+ */
+function mostrarModalReserva() {
+    const modal = document.getElementById('modalReserva');
+    const selectLibro = document.getElementById('libroReserva');
+
+    // Limpiar opciones anteriores
+    selectLibro.innerHTML = '';
+
+    // Agregar opciones de libros disponibles
+    const librosDisponibles = APP_STATE.catalogo.filter(libro => libro.estado === 'Disponible');
+
+    if (librosDisponibles.length === 0) {
+        selectLibro.innerHTML = '<option value="">No hay libros disponibles</option>';
+    } else {
+        librosDisponibles.forEach(libro => {
+            const option = document.createElement('option');
+            option.value = libro.id_libro;
+            option.textContent = `${libro.titulo} - ${libro.autor}`;
+            selectLibro.appendChild(option);
+        });
+    }
+
+    // Mostrar modal
+    modal.style.display = 'block';
+}
+
+/**
+ * Cerrar modal de reserva
+ */
+function cerrarModalReserva() {
+    document.getElementById('modalReserva').style.display = 'none';
+}
+
+/**
+ * Solicitar reserva
+ */
+async function solicitarReserva() {
+    const selectLibro = document.getElementById('libroReserva');
+    const idLibro = selectLibro.value;
+
+    if (!idLibro) {
+        alert('Por favor selecciona un libro');
+        return;
+    }
+
+    try {
+        // Simular llamada a API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Actualizar estado local
+        const libroReservado = APP_STATE.catalogo.find(libro => libro.id_libro == idLibro);
+        if (libroReservado) {
+            libroReservado.estado = 'Reservado';
+        }
+
+        const nuevaReserva = {
+            id: APP_STATE.reservas.pendientes.length + 1,
+            libroId: parseInt(idLibro),
+            titulo: libroReservado?.titulo || 'Libro reservado',
+            fechaReserva: new Date().toISOString().split('T')[0],
+            fechaDisponible: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            estado: 'pendiente'
+        };
+
+        APP_STATE.reservas.pendientes.push(nuevaReserva);
+        DOM.contadorReservas.textContent = `${APP_STATE.reservas.pendientes.length} pendientes`;
+
+        cerrarModalReserva();
+        alert('Reserva solicitada con éxito');
+        renderReservas('pendientes');
+    } catch (error) {
+        console.error('Error al solicitar reserva:', error);
+        alert('Error al solicitar la reserva');
+    }
+}
+
+/**
+ * Mostrar modal de préstamo
+ */
+function mostrarModalPrestamo() {
+    const modal = document.getElementById('modalPrestamo');
+    const selectLibro = document.getElementById('libroPrestamo');
+
+    // Limpiar opciones anteriores
+    selectLibro.innerHTML = '';
+
+    // Agregar opciones de libros disponibles
+    const librosDisponibles = APP_STATE.catalogo.filter(libro => libro.estado === 'Disponible');
+
+    if (librosDisponibles.length === 0) {
+        selectLibro.innerHTML = '<option value="">No hay libros disponibles</option>';
+    } else {
+        librosDisponibles.forEach(libro => {
+            const option = document.createElement('option');
+            option.value = libro.id_libro;
+            option.textContent = `${libro.titulo} - ${libro.autor}`;
+            selectLibro.appendChild(option);
+        });
+    }
+
+    // Mostrar modal
+    modal.style.display = 'block';
+}
+
+/**
+ * Cerrar modal de préstamo
+ */
+function cerrarModalPrestamo() {
+    document.getElementById('modalPrestamo').style.display = 'none';
+}
+
+/**
+ * Solicitar préstamo
+ */
+async function solicitarPrestamo() {
+    const selectLibro = document.getElementById('libroPrestamo');
+    const diasPrestamo = document.getElementById('diasPrestamo');
+    const idLibro = selectLibro.value;
+
+    if (!idLibro) {
+        alert('Por favor selecciona un libro');
+        return;
+    }
+
+    try {
+        // Simular llamada a API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Actualizar estado local
+        const libroPrestado = APP_STATE.catalogo.find(libro => libro.id_libro == idLibro);
+        if (libroPrestado) {
+            libroPrestado.estado = 'Prestado';
+        }
+
+        const nuevoPrestamo = {
+            id: APP_STATE.prestamos.activos.length + 1,
+            libroId: parseInt(idLibro),
+            titulo: libroPrestado?.titulo || 'Libro prestado',
+            fechaPrestamo: new Date().toISOString().split('T')[0],
+            fechaDevolucion: null,
+            dias_prestamo: parseInt(diasPrestamo.value),
+            plazo_maximo: 15,
+            estado: 'activo',
+            vencido: false,
+            devuelto: false
+        };
+
+        APP_STATE.prestamos.activos.push(nuevoPrestamo);
+        DOM.contadorPrestamos.textContent = `${APP_STATE.prestamos.activos.length} activos`;
+
+        cerrarModalPrestamo();
+        alert('Préstamo solicitado con éxito');
+        renderPrestamos('activos');
+    } catch (error) {
+        console.error('Error al solicitar préstamo:', error);
+        alert('Error al solicitar el préstamo');
     }
 }
 
@@ -812,18 +1216,32 @@ function showErrorState() {
 function verDetalleLibro(idLibro) {
     console.log(`Mostrando detalles del libro con ID: ${idLibro}`);
     // Implementación real: abrir modal o redirigir
-    alert(`Detalles del libro ${idLibro}`);
+    const libro = APP_STATE.catalogo.find(l => l.id_libro == idLibro) ||
+                 APP_STATE.libros.find(l => l.id_libro == idLibro);
+
+    if (libro) {
+        alert(`Detalles del libro:\n\nTítulo: ${libro.titulo}\nAutor: ${libro.autor}\nEditorial: ${libro.editorial}\nAño: ${libro.anio_publicacion}\nCategoría: ${libro.categoria}\nEstado: ${libro.estado}`);
+    } else {
+        alert('Libro no encontrado');
+    }
 }
 
 async function renovarPrestamo(idPrestamo) {
     try {
         console.log(`Solicitando renovación para el préstamo con ID: ${idPrestamo}`);
-        // Implementación real: llamada a API
-        // await fetch(...);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simular llamada API
-        alert('Préstamo renovado con éxito');
-        await loadPrestamos();
-        renderPrestamos('activos');
+        // Simular llamada a API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const prestamo = APP_STATE.prestamos.activos.find(p => p.id == idPrestamo);
+        if (prestamo) {
+            prestamo.dias_prestamo += 7;
+            prestamo.plazo_maximo += 7;
+            alert('Préstamo renovado con éxito por 7 días más');
+            await loadPrestamos();
+            renderPrestamos('activos');
+        } else {
+            alert('Préstamo no encontrado');
+        }
     } catch (error) {
         console.error('Error al renovar préstamo:', error);
         alert('Error al renovar el préstamo');
@@ -835,12 +1253,32 @@ async function cancelarReserva(idReserva) {
 
     try {
         console.log(`Cancelando reserva con ID: ${idReserva}`);
-        // Implementación real: llamada a API
-        // await fetch(...);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simular llamada API
-        alert('Reserva cancelada con éxito');
-        await loadReservas();
-        renderReservas('pendientes');
+        // Simular llamada a API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const reservaIndex = APP_STATE.reservas.pendientes.findIndex(r => r.id == idReserva);
+        if (reservaIndex !== -1) {
+            const reserva = APP_STATE.reservas.pendientes[reservaIndex];
+
+            // Actualizar estado del libro
+            const libro = APP_STATE.catalogo.find(l => l.id_libro == reserva.libroId);
+            if (libro) {
+                libro.estado = 'Disponible';
+            }
+
+            // Mover reserva a canceladas
+            APP_STATE.reservas.pendientes.splice(reservaIndex, 1);
+            reserva.estado = 'cancelada';
+            APP_STATE.reservas.canceladas.push(reserva);
+
+            // Actualizar contador
+            DOM.contadorReservas.textContent = `${APP_STATE.reservas.pendientes.length} pendientes`;
+
+            alert('Reserva cancelada con éxito');
+            renderReservas('pendientes');
+        } else {
+            alert('Reserva no encontrada');
+        }
     } catch (error) {
         console.error('Error al cancelar reserva:', error);
         alert('Error al cancelar la reserva');
@@ -850,11 +1288,28 @@ async function cancelarReserva(idReserva) {
 async function descargarDeNuevo(idLibro) {
     try {
         console.log(`Iniciando nueva descarga del libro con ID: ${idLibro}`);
-        // Implementación real: llamada a API
-        // const response = await fetch(...);
-        // Procesar descarga...
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simular descarga
-        alert('Descarga iniciada');
+        // Simular descarga
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const libro = APP_STATE.catalogo.find(l => l.id_libro == idLibro) ||
+                     APP_STATE.libros.find(l => l.id_libro == idLibro);
+
+        if (libro) {
+            alert(`Iniciando descarga de "${libro.titulo}" en formato ${libro.formato}`);
+
+            // Agregar a descargas recientes
+            const nuevaDescarga = {
+                id: APP_STATE.descargas.length + 1,
+                libroId: libro.id_libro,
+                titulo: libro.titulo,
+                fecha: new Date().toISOString().split('T')[0],
+                formato: libro.formato
+            };
+
+            APP_STATE.descargas.unshift(nuevaDescarga);
+        } else {
+            alert('Libro no encontrado');
+        }
     } catch (error) {
         console.error('Error al descargar:', error);
         alert('Error al iniciar la descarga');
@@ -872,13 +1327,24 @@ async function guardarPerfil() {
         };
 
         console.log('Guardando cambios:', datosActualizados);
-        // Implementación real: llamada a API
-        // await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.actualizarPerfil}`, {
-        //     method: 'POST',
-        //     body: JSON.stringify(datosActualizados)
-        // });
+        // Simular guardado
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simular guardado
+        // Actualizar estado local
+        if (APP_STATE.docente) {
+            APP_STATE.docente.nombre = datosActualizados.nombre;
+            APP_STATE.docente.especialidad = datosActualizados.especialidad;
+            APP_STATE.docente.grado_academico = datosActualizados.grado;
+            APP_STATE.docente.carrera = datosActualizados.carrera;
+            APP_STATE.docente.correo = datosActualizados.correo;
+
+            // Actualizar UI
+            DOM.nombreDocente.textContent = datosActualizados.nombre;
+            DOM.especialidadDocente.textContent = datosActualizados.especialidad;
+            DOM.gradoDocente.textContent = datosActualizados.grado;
+            DOM.carreraDocente.textContent = datosActualizados.carrera;
+        }
+
         alert('Perfil actualizado con éxito');
     } catch (error) {
         console.error('Error al guardar perfil:', error);

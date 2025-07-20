@@ -553,6 +553,55 @@ tr:hover {
     box-shadow: 0 0 10px rgba(139, 90, 43, 0.6);
 }
 
+/* Sección de Descargas */
+.downloads-container {
+    margin-top: 20px;
+}
+
+.download-item {
+    background: rgba(40, 30, 20, 0.8);
+    border: 1px solid var(--color-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.download-icon {
+    font-size: 2rem;
+    color: var(--gold-accent);
+}
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h4 {
+    color: var(--gold-accent);
+    margin-bottom: 5px;
+}
+
+.download-info p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.download-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* No data */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: var(--gold-accent);
+    opacity: 0.7;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .main-content.sidebar-open {
@@ -594,6 +643,21 @@ tr:hover {
 
     .filters {
         flex-direction: column;
+    }
+
+    .reservations-actions {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    .download-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .download-actions {
+        justify-content: center;
+        width: 100%;
     }
 }
 

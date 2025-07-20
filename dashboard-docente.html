@@ -56,6 +56,13 @@
                 </button>
             </li>
             <li>
+                <button id="btnDescargas" class="sidebar-btn" onclick="cargarSeccion('descargas')">
+                    <i class="fas fa-download"></i>
+                    <span>Mis Descargas</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li>
                 <button id="btnPerfil" class="sidebar-btn" onclick="cargarSeccion('perfil')">
                     <i class="fas fa-user-graduate"></i>
                     <span>Perfil</span>
@@ -91,7 +98,7 @@
             </section>
 
             <section class="recommended-books">
-                <h2><i class="fas fa-star"></i> Tu Libros Favoritos</h2>
+                <h2><i class="fas fa-star"></i> Tus Libros Favoritos</h2>
                 <div class="books-grid" id="librosEspecialidad"></div>
             </section>
 
@@ -128,8 +135,14 @@
                 <select class="gothic-select" id="filtroCategoria">
                     <option value="">Todas las categorías</option>
                     <option>Novela</option>
-                    <option>Teoría</option>
-                    <option>Investigación</option>
+                    <option>Distopía</option>
+                    <option>Épico</option>
+                    <option>Poesía</option>
+                    <option>Romance</option>
+                    <option>Misterio</option>
+                    <option>Drama</option>
+                    <option>Fábula</option>
+                    <option>Experimental</option>
                 </select>
                 <select class="gothic-select" id="filtroOrden">
                     <option value="titulo">Ordenar por: Título (A-Z)</option>
@@ -162,6 +175,11 @@
                     <tbody></tbody>
                 </table>
             </div>
+            <div class="loans-actions">
+              <button class="gothic-button" onclick="mostrarModalPrestamo()">
+                <i class="fas fa-plus"></i> Solicitar Préstamo
+              </button>
+            </div>
         </main>
 
         <!-- Sección Reservas -->
@@ -173,6 +191,11 @@
                 <button class="tab-btn" onclick="filtrarReservas('canceladas')">Canceladas</button>
             </div>
             <div class="reservations-grid" id="gridReservas"></div>
+            <div class="reservations-actions">
+              <button class="gothic-button" onclick="mostrarModalReserva()">
+                <i class="fas fa-plus"></i> Solicitar Reserva
+              </button>
+            </div>
         </main>
 
         <!-- Sección Perfil -->
@@ -217,6 +240,54 @@
                 <button class="gothic-button save-btn"><i class="fas fa-save"></i> Guardar Cambios</button>
             </div>
         </main>
+        <!-- Sección Descargas -->
+
+        <main class="gothic-main" id="seccionDescargas" style="display:none;">
+          <h2><i class="fas fa-download"></i> Mis Descargas</h2>
+          <div class="downloads-container" id="descargasRecientes"></div>
+        </main>
+    </div>
+
+    <!-- Modal para Reserva -->
+    <div id="modalReserva" class="gothic-modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="cerrarModalReserva()">&times;</span>
+        <h2><i class="fas fa-calendar-check"></i> Solicitar Nueva Reserva</h2>
+        <div class="modal-form">
+          <div class="form-group">
+            <label for="libroReserva"><i class="fas fa-book"></i> Libro</label>
+            <select id="libroReserva" class="gothic-select">
+              <!-- Opciones se llenarán con JS -->
+            </select>
+          </div>
+          <button class="gothic-button" onclick="solicitarReserva()">
+            <i class="fas fa-check"></i> Confirmar Reserva
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Préstamo -->
+    <div id="modalPrestamo" class="gothic-modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="cerrarModalPrestamo()">&times;</span>
+        <h2><i class="fas fa-exchange-alt"></i> Solicitar Nuevo Préstamo</h2>
+        <div class="modal-form">
+          <div class="form-group">
+            <label for="libroPrestamo"><i class="fas fa-book"></i> Libro</label>
+            <select id="libroPrestamo" class="gothic-select">
+              <!-- Opciones se llenarán con JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="diasPrestamo"><i class="fas fa-calendar-day"></i> Días de préstamo</label>
+            <input type="number" id="diasPrestamo" class="gothic-input" min="1" max="15" value="7">
+          </div>
+          <button class="gothic-button" onclick="solicitarPrestamo()">
+            <i class="fas fa-check"></i> Confirmar Préstamo
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
