@@ -1,0 +1,682 @@
+/* Estilos base */
+:root {
+    --color-primary: #5a2b8b;
+    --color-secondary: #3a1a5d;
+    --text-color: #e0d6c2;
+    --gold-accent: #b37ec9;
+    --dark-bg: rgba(20, 15, 15, 0.85);
+    --header-bg: rgba(40, 30, 40, 0.9);
+    --sidebar-bg: rgba(30, 15, 30, 0.95);
+    --tab-active: rgba(90, 43, 139, 0.5);
+    --tab-inactive: rgba(60, 30, 60, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'MedievalSharp', cursive;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.estudiante-dashboard {
+    background:
+        linear-gradient(rgba(20, 15, 15, 0.7), rgba(40, 30, 40, 0.8)),
+        url('../img/fondo-estudiante.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* Header */
+.gothic-header {
+    background-color: var(--header-bg);
+    border-bottom: 3px solid var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    padding: 15px 0;
+    position: relative;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.gothic-header h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    color: var(--gold-accent);
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    object-fit: cover;
+}
+
+/* Menú Lateral */
+.gothic-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--sidebar-bg);
+    border-left: 3px solid var(--color-secondary);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.4s ease-in-out;
+}
+
+.gothic-sidebar.show {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    background: rgba(40, 20, 40, 0.7);
+}
+
+.sidebar-icon {
+    font-size: 1.5rem;
+    color: var(--gold-accent);
+    margin-right: 15px;
+}
+
+.sidebar-header h3 {
+    color: var(--gold-accent);
+    font-family: 'Cinzel Decorative', cursive;
+    margin: 0;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.sidebar-btn {
+    width: 100%;
+    padding: 12px 25px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: 'MedievalSharp', cursive;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.sidebar-btn:hover {
+    background: rgba(90, 43, 139, 0.3);
+    color: var(--gold-accent);
+}
+
+.sidebar-btn.active {
+    background: var(--tab-active);
+    color: var(--gold-accent);
+    border-left: 3px solid var(--gold-accent);
+}
+
+.sidebar-btn i:first-child {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-btn .indicator {
+    margin-left: auto;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.sidebar-btn:hover .indicator {
+    animation: bounceRight 0.5s infinite alternate;
+}
+
+@keyframes bounceRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(5px); }
+}
+
+.logout-item {
+    margin-top: auto;
+    border-top: 1px solid var(--color-secondary);
+}
+
+.sidebar-footer {
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.candle-effect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center,
+        rgba(160, 60, 255, 0.8) 0%,
+        rgba(60, 0, 255, 0.4) 50%,
+        transparent 70%);
+    filter: blur(5px);
+    opacity: 0.8;
+    transition: opacity 3s ease-in-out;
+}
+
+/* Contenido Principal */
+.main-content {
+    margin-right: 0;
+    transition: margin-right 0.4s ease-in-out;
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+}
+
+.main-content.sidebar-open {
+    margin-right: 280px;
+}
+
+.gothic-main {
+    background-color: var(--dark-bg);
+    border: 2px solid var(--color-secondary);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(90, 43, 139, 0.4);
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Secciones */
+section {
+    margin-bottom: 30px;
+}
+
+section h2 {
+    color: var(--gold-accent);
+    font-family: 'Cinzel Decorative', cursive;
+    border-bottom: 1px solid var(--color-secondary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+section h2 i {
+    font-size: 1.2em;
+}
+
+/* Tarjetas de bienvenida */
+.welcome-card {
+    background: rgba(60, 30, 60, 0.7);
+    border: 1px solid var(--color-primary);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.academic-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Acceso rápido */
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.quick-card {
+    background: rgba(40, 20, 40, 0.8);
+    border: 1px solid var(--color-secondary);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(90, 43, 139, 0.4);
+    background: rgba(60, 30, 60, 0.7);
+}
+
+.quick-card i {
+    font-size: 2.5rem;
+    color: var(--gold-accent);
+    margin-bottom: 15px;
+}
+
+.quick-card h3 {
+    color: var(--gold-accent);
+    margin-bottom: 5px;
+}
+
+.quick-card span {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Grid de libros */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.book-card {
+    background: rgba(40, 20, 40, 0.8);
+    border: 1px solid var(--color-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease-out;
+    transform-origin: center bottom;
+    will-change: transform;
+}
+
+.book-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(90, 43, 139, 0.6);
+}
+
+.book-cover {
+    background: rgba(80, 40, 80, 0.6);
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: var(--gold-accent);
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.book-info h3 {
+    color: var(--gold-accent);
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.book-category {
+    display: inline-block;
+    background: rgba(90, 43, 139, 0.3);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+/* Pestañas */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: var(--tab-inactive);
+    border: none;
+    color: var(--text-color);
+    font-family: 'MedievalSharp', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+    background: rgba(90, 43, 139, 0.3);
+}
+
+.tab-btn.active {
+    background: var(--tab-active);
+    color: var(--gold-accent);
+    border-bottom: 3px solid var(--gold-accent);
+}
+
+/* Tablas */
+.loans-table {
+    margin-top: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(40, 20, 40, 0.8);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+th {
+    background-color: rgba(90, 43, 139, 0.5);
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: rgba(90, 43, 139, 0.2);
+}
+
+/* Tarjetas de reservas */
+.reservations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.reservation-card {
+    background: rgba(40, 20, 40, 0.8);
+    border: 1px solid var(--color-secondary);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.reservation-card h3 {
+    color: var(--gold-accent);
+    margin-bottom: 10px;
+}
+
+.reservation-card p {
+    margin-bottom: 8px;
+}
+
+.status-pendiente {
+    color: #d4af37;
+}
+
+.status-completada {
+    color: #7cb342;
+}
+
+.status-cancelada {
+    color: #e57373;
+}
+
+/* Formularios */
+.profile-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.avatar-upload {
+    text-align: center;
+    margin-right: 20px;
+}
+
+#avatarPreview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--color-primary);
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.gothic-input {
+    width: 100%;
+    padding: 10px 15px;
+    background: rgba(60, 30, 60, 0.5);
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-family: 'MedievalSharp', cursive;
+}
+
+.gothic-select {
+    width: 100%;
+    padding: 10px 15px;
+    background: rgba(60, 30, 60, 0.5);
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-family: 'MedievalSharp', cursive;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b37ec9'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 15px;
+}
+
+.save-btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+}
+
+/* Catálogo */
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px 15px;
+    background: rgba(60, 30, 60, 0.5);
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px 0 0 5px;
+    color: var(--text-color);
+    font-family: 'MedievalSharp', cursive;
+}
+
+.search-bar button {
+    border-radius: 0 5px 5px 0;
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Botones */
+.gothic-button, .gothic-button-small {
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'MedievalSharp', cursive;
+    transition: all 0.3s;
+    transform-origin: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gothic-button {
+    padding: 8px 15px;
+    margin-top: 10px;
+}
+
+.gothic-button-small {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.gothic-button:hover, .gothic-button-small:hover {
+    background: linear-gradient(to bottom, #6a3b9b, #4a2a6d);
+    box-shadow: 0 0 10px rgba(90, 43, 139, 0.6);
+}
+
+/* Sección de Descargas */
+.downloads-container {
+    margin-top: 20px;
+}
+
+.download-item {
+    background: rgba(40, 20, 40, 0.8);
+    border: 1px solid var(--color-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.download-icon {
+    font-size: 2rem;
+    color: var(--gold-accent);
+}
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h4 {
+    color: var(--gold-accent);
+    margin-bottom: 5px;
+}
+
+.download-info p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.download-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* No data */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: var(--gold-accent);
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .main-content.sidebar-open {
+        margin-right: 0;
+    }
+
+    .gothic-sidebar {
+        transform: translateX(100%);
+    }
+
+    .gothic-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .avatar-upload {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .books-grid, .reservations-grid, .quick-access-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .reservations-actions {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    .download-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .download-actions {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .books-grid, .reservations-grid, .quick-access-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab-btn {
+        border-bottom: none;
+        border-left: 3px solid transparent;
+    }
+
+    .tab-btn.active {
+        border-bottom: none;
+        border-left: 3px solid var(--gold-accent);
+    }
+}
