@@ -2,19 +2,713 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel Bibliotecario</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    body {
-      background-image: url("img/fondo-bibliotecario.jpg");
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Bibliotecario - Biblioteca Virtual</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/biblio-styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="dashboard">
-    <h1>Bienvenido Bibliotecario</h1>
-    <p>Acceso a reportes, gestión de usuarios y control total.</p>
-    <a href="index.html">Cerrar sesión</a>
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h2><i class="fas fa-book"></i> Biblioteca Real</h2>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="active" data-target="dashboard">
+          <i class="fas fa-scroll"></i> <span>Tablero</span>
+        </li>
+        <li data-target="libros">
+          <i class="fas fa-book"></i> <span>Tomos</span>
+        </li>
+        <li data-target="prestamos">
+          <i class="fas fa-exchange-alt"></i> <span>Préstamos</span>
+          <span class="badge">5</span>
+        </li>
+        <li data-target="reservas">
+          <i class="fas fa-calendar-check"></i> <span>Reservas</span>
+          <span class="badge">3</span>
+        </li>
+        <li data-target="usuarios">
+          <i class="fas fa-users"></i> <span>Usuarios</span>
+        </li>
+        <li data-target="reportes">
+          <i class="fas fa-chart-pie"></i> <span>Registros</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <img src="img/avatar-biblio.png" alt="Bibliotecario">
+          <div class="user-info">
+            <span class="user-name">Guardian del Saber</span>
+            <span class="user-role">Bibliotecario Real</span>
+          </div>
+          <a href="index.html" class="logout-btn">
+            <i class="fas fa-door-open"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1 id="page-title"><i class="fas fa-scroll"></i> Tablero del Bibliotecario</h1>
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar en los anales...">
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="notifications">
+          <button id="notifications-btn">
+            <i class="fas fa-bell"></i>
+            <span class="badge">7</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <section id="dashboard" class="content-section active">
+        <div class="welcome-banner">
+          <h2><i class="fas fa-scroll"></i> Bienvenido, Guardián del Saber</h2>
+          <p>Gestiona la sabiduría de nuestra biblioteca</p>
+        </div>
+
+        <div class="stats-grid">
+          <!-- Tarjeta de Libros -->
+          <div class="stat-card large">
+            <div class="stat-header">
+              <i class="fas fa-book-open"></i>
+              <h3>Colección de Tomos</h3>
+            </div>
+            <div class="stat-content">
+              <div class="stat-main">
+                <span class="stat-number">1,245</span>
+                <span class="stat-label">Tomos registrados</span>
+              </div>
+              <div class="stat-secondary">
+                <div class="stat-item">
+                  <span class="stat-mini-number">856</span>
+                  <span class="stat-mini-label">Disponibles</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-mini-number">127</span>
+                  <span class="stat-mini-label">Prestados</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-mini-number">23</span>
+                  <span class="stat-mini-label">Reservados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Usuarios -->
+          <div class="stat-card large">
+            <div class="stat-header">
+              <i class="fas fa-users"></i>
+              <h3>Usuarios Registrados</h3>
+            </div>
+            <div class="stat-content">
+              <div class="stat-main">
+                <span class="stat-number">542</span>
+                <span class="stat-label">Total de usuarios</span>
+              </div>
+              <div class="stat-secondary">
+                <div class="stat-item">
+                  <span class="stat-mini-number">387</span>
+                  <span class="stat-mini-label">Estudiantes</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-mini-number">45</span>
+                  <span class="stat-mini-label">Docentes</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-mini-number">110</span>
+                  <span class="stat-mini-label">Externos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Actividad Reciente -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <i class="fas fa-bolt"></i>
+              <h3>Actividad Reciente</h3>
+            </div>
+            <div class="stat-content">
+              <div class="activity-item">
+                <i class="fas fa-exchange-alt activity-icon loan"></i>
+                <div class="activity-details">
+                  <p>Nuevo préstamo registrado</p>
+                  <small>Rayuela a Carlos Gómez</small>
+                  <span class="activity-time">Hace 15 minutos</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <i class="fas fa-book activity-icon new-book"></i>
+                <div class="activity-details">
+                  <p>Tomo añadido</p>
+                  <small>"Ficciones" de Borges</small>
+                  <span class="activity-time">Hace 2 horas</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <i class="fas fa-user-plus activity-icon user"></i>
+                <div class="activity-details">
+                  <p>Nuevo usuario</p>
+                  <small>María López registrada</small>
+                  <span class="activity-time">Ayer, 14:30</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Préstamos -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <i class="fas fa-exchange-alt"></i>
+              <h3>Préstamos Activos</h3>
+            </div>
+            <div class="stat-content">
+              <div class="stat-main">
+                <span class="stat-number">87</span>
+                <span class="stat-label">Préstamos vigentes</span>
+              </div>
+              <div class="stat-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>5 préstamos vencidos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gráfico de Préstamos por Categoría -->
+          <div class="stat-card full-width">
+            <div class="stat-header">
+              <i class="fas fa-chart-pie"></i>
+              <h3>Préstamos por Categoría</h3>
+            </div>
+            <div class="stat-content">
+              <canvas id="loans-by-category"></canvas>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Reservas -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <i class="fas fa-calendar-check"></i>
+              <h3>Reservas Pendientes</h3>
+            </div>
+            <div class="stat-content">
+              <div class="stat-main">
+                <span class="stat-number">15</span>
+                <span class="stat-label">Reservas por procesar</span>
+              </div>
+              <div class="stat-notice">
+                <i class="fas fa-bell"></i>
+                <span>3 disponibles para notificar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Descargas -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <i class="fas fa-download"></i>
+              <h3>Descargas Digitales</h3>
+            </div>
+            <div class="stat-content">
+              <div class="stat-main">
+                <span class="stat-number">324</span>
+                <span class="stat-label">Este mes</span>
+              </div>
+              <div class="stat-trend up">
+                <i class="fas fa-arrow-up"></i>
+                <span>12% más que el mes pasado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gestión de Libros -->
+      <section id="libros" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-book-spells"></i> Gestión de Tomos Antiguos</h2>
+          <button class="btn-medieval" id="add-book-btn">
+            <i class="fas fa-plus"></i> Añadir Tomo
+          </button>
+        </div>
+
+        <div class="filters">
+          <select class="medieval-select" id="book-status-filter">
+            <option value="">Todos los estados</option>
+            <option value="Disponible">Disponible</option>
+            <option value="Prestado">Prestado</option>
+            <option value="Reservado">Reservado</option>
+          </select>
+          <select class="medieval-select" id="book-category-filter">
+            <option value="">Todas las categorías</option>
+            <option>Novela</option>
+            <option>Poesía</option>
+            <option>Teatro</option>
+            <option>Distopía</option>
+            <option>Fábula</option>
+          </select>
+          <input type="text" placeholder="Buscar por título o autor..." class="medieval-input" id="book-search">
+        </div>
+
+        <div class="table-container">
+          <table class="medieval-table" id="books-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal para libros -->
+        <div id="book-modal" class="modal-medieval">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-book-medical"></i> <span id="modal-book-title">Registrar Nuevo Tomo</span></h3>
+            <form id="book-form">
+              <input type="hidden" id="book-id">
+              <div class="form-group">
+                <label>Título:</label>
+                <input type="text" id="book-title" class="medieval-input" required>
+              </div>
+              <div class="form-group">
+                <label>Autor:</label>
+                <input type="text" id="book-author" class="medieval-input" required>
+              </div>
+              <div class="form-group">
+                <label>Editorial:</label>
+                <input type="text" id="book-publisher" class="medieval-input">
+              </div>
+              <div class="form-group">
+                <label>Categoría:</label>
+                <select id="book-category" class="medieval-select" required>
+                  <option value="">Seleccionar...</option>
+                  <option>Novela</option>
+                  <option>Poesía</option>
+                  <option>Teatro</option>
+                  <option>Distopía</option>
+                  <option>Fábula</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Año de Publicación:</label>
+                <input type="number" id="book-year" class="medieval-input">
+              </div>
+              <div class="form-group">
+                <label>Estado:</label>
+                <select id="book-status" class="medieval-select" required>
+                  <option value="Disponible">Disponible</option>
+                  <option value="Prestado">Prestado</option>
+                  <option value="Reservado">Reservado</option>
+                </select>
+              </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn-medieval">Guardar Tomo</button>
+                <button type="button" class="btn-medieval btn-cancel" id="cancel-book">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gestión de Préstamos -->
+      <section id="prestamos" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-scroll"></i> Registro de Préstamos</h2>
+          <button class="btn-medieval" id="new-loan-btn">
+            <i class="fas fa-exchange-alt"></i> Nuevo Préstamo
+          </button>
+        </div>
+
+        <div class="tabs-medieval">
+          <button class="tab-btn active" data-tab="active-loans">Préstamos Activos</button>
+          <button class="tab-btn" data-tab="overdue-loans">Vencidos</button>
+          <button class="tab-btn" data-tab="history-loans">Historial</button>
+        </div>
+
+        <div class="tab-content active" id="active-loans">
+          <table class="medieval-table" id="active-loans-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Préstamo</th>
+                <th>Devolución</th>
+                <th>Días Restantes</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="overdue-loans">
+          <table class="medieval-table" id="overdue-loans-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Préstamo</th>
+                <th>Devolución</th>
+                <th>Días Atraso</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="history-loans">
+          <table class="medieval-table" id="history-loans-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Préstamo</th>
+                <th>Fecha Devolución</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal para préstamos -->
+        <div id="loan-modal" class="modal-medieval">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-exchange-alt"></i> Registrar Nuevo Préstamo</h3>
+            <form id="loan-form">
+              <div class="form-group">
+                <label>Usuario:</label>
+                <select id="loan-user" class="medieval-select" required>
+                  <option value="">Seleccionar...</option>
+                  <!-- Se llenará con JavaScript -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Tomo:</label>
+                <select id="loan-book" class="medieval-select" required>
+                  <option value="">Seleccionar...</option>
+                  <!-- Se llenará con JavaScript -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Días de préstamo:</label>
+                <input type="number" id="loan-days" class="medieval-input" value="7" min="1" max="15">
+              </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn-medieval">Registrar Préstamo</button>
+                <button type="button" class="btn-medieval btn-cancel" id="cancel-loan">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gestión de Reservas -->
+      <section id="reservas" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-calendar-check"></i> Gestión de Reservas</h2>
+          <button class="btn-medieval" id="new-reservation-btn">
+              <i class="fas fa-plus"></i> Nueva Reserva
+          </button>
+        </div>
+
+        <div class="tabs-medieval">
+            <button class="tab-btn active" data-tab="pending-reservations">Pendientes</button>
+            <button class="tab-btn" data-tab="completed-reservations">Completadas</button>
+            <button class="tab-btn" data-tab="cancelled-reservations">Canceladas</button>
+        </div>
+
+        <div class="tab-content active" id="pending-reservations">
+          <table class="medieval-table" id="pending-reservations-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Reserva</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="completed-reservations">
+          <table class="medieval-table" id="completed-reservations-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Reserva</th>
+                <th>Fecha Notificación</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="cancelled-reservations">
+          <table class="medieval-table" id="cancelled-reservations-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Tomo</th>
+                <th>Fecha Reserva</th>
+                <th>Fecha Cancelación</th>
+                <th>Motivo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal para gestionar reservas -->
+        <div id="reservation-modal" class="modal-medieval">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-calendar-check"></i> Gestionar Reserva</h3>
+            <div class="reservation-info">
+              <p><strong>Usuario:</strong> <span id="reservation-user"></span></p>
+              <p><strong>Tomo:</strong> <span id="reservation-book"></span></p>
+              <p><strong>Fecha Reserva:</strong> <span id="reservation-date"></span></p>
+            </div>
+            <form id="reservation-form">
+              <div class="form-group">
+                <label>Acción:</label>
+                <select id="reservation-action" class="medieval-select" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="notify">Notificar Disponibilidad</option>
+                  <option value="cancel">Cancelar Reserva</option>
+                </select>
+              </div>
+              <div class="form-group" id="cancel-reason-group" style="display: none;">
+                <label>Motivo de Cancelación:</label>
+                <textarea id="cancel-reason" class="medieval-input" rows="3"></textarea>
+              </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn-medieval">Confirmar</button>
+                <button type="button" class="btn-medieval btn-cancel" id="cancel-reservation">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gestión de Usuarios -->
+      <section id="usuarios" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-users-crown"></i> Registro de Usuarios</h2>
+          <button class="btn-medieval" id="new-user-btn">
+            <i class="fas fa-user-plus"></i> Nuevo Usuario
+          </button>
+        </div>
+
+        <div class="filters">
+          <select class="medieval-select" id="user-type-filter">
+            <option value="">Todos los tipos</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Docente">Docente</option>
+            <option value="Externo">Externo</option>
+          </select>
+          <input type="text" placeholder="Buscar por nombre..." class="medieval-input" id="user-search">
+        </div>
+
+        <table class="medieval-table" id="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Correo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos se cargarán con JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Modal para usuarios -->
+        <div id="user-modal" class="modal-medieval">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-user-plus"></i> <span id="modal-user-title">Registrar Nuevo Usuario</span></h3>
+            <form id="user-form">
+              <input type="hidden" id="user-id">
+              <div class="form-group">
+                <label>Tipo de Usuario:</label>
+                <select id="user-type" class="medieval-select" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="Estudiante">Estudiante</option>
+                  <option value="Docente">Docente</option>
+                  <option value="Externo">Externo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="user-name" class="medieval-input" required>
+              </div>
+              <div class="form-group">
+                <label>Apellido:</label>
+                <input type="text" id="user-lastname" class="medieval-input" required>
+              </div>
+              <div class="form-group">
+                <label>Correo:</label>
+                <input type="email" id="user-email" class="medieval-input" required>
+              </div>
+              <div class="form-group" id="student-fields">
+                <label>Matrícula:</label>
+                <input type="text" id="user-matricula" class="medieval-input">
+                <label>Carrera:</label>
+                <input type="text" id="user-carrera" class="medieval-input">
+              </div>
+              <div class="form-group" id="teacher-fields">
+                <label>Especialidad:</label>
+                <input type="text" id="user-especialidad" class="medieval-input">
+                <label>Grado Académico:</label>
+                <input type="text" id="user-grado" class="medieval-input">
+              </div>
+              <div class="form-group">
+                <label>Estado:</label>
+                <select id="user-status" class="medieval-select" required>
+                  <option value="Activo">Activo</option>
+                  <option value="Bloqueado">Bloqueado</option>
+                </select>
+              </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn-medieval">Guardar Usuario</button>
+                <button type="button" class="btn-medieval btn-cancel" id="cancel-user">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reportes y Estadísticas -->
+      <section id="reportes" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-chart-pie"></i> Anales y Estadísticas</h2>
+          <div class="report-actions">
+            <button class="btn-medieval" id="generate-report">
+              <i class="fas fa-scroll"></i> Generar Pergamino
+            </button>
+            <button class="btn-medieval" id="print-report">
+              <i class="fas fa-print"></i> Imprimir
+            </button>
+          </div>
+        </div>
+
+        <div class="report-filters">
+          <div class="filter-group">
+            <label>Desde:</label>
+            <input type="date" class="medieval-input" id="report-start-date">
+          </div>
+          <div class="filter-group">
+            <label>Hasta:</label>
+            <input type="date" class="medieval-input" id="report-end-date">
+          </div>
+          <div class="filter-group">
+            <label>Tipo de Reporte:</label>
+            <select class="medieval-select" id="report-type">
+              <option value="general">General</option>
+              <option value="loans">Préstamos</option>
+              <option value="reservations">Reservas</option>
+              <option value="users">Usuarios</option>
+            </select>
+          </div>
+          <button class="btn-medieval" id="apply-filters">Aplicar Filtros</button>
+        </div>
+
+        <div class="report-cards">
+          <div class="report-card">
+            <h3><i class="fas fa-book"></i> Libros más solicitados</h3>
+            <div class="chart-container">
+              <canvas id="top-books-chart"></canvas>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <h3><i class="fas fa-users"></i> Usuarios más activos</h3>
+            <div class="chart-container">
+              <canvas id="active-users-chart"></canvas>
+            </div>
+          </div>
+
+          <div class="report-card full-width">
+            <h3><i class="fas fa-exchange-alt"></i> Movimientos recientes</h3>
+            <table class="medieval-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Usuario</th>
+                  <th>Tomo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="recent-movements">
+                <!-- Datos se cargarán con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-card">
+            <h3><i class="fas fa-calendar"></i> Estadísticas por mes</h3>
+            <div class="chart-container">
+              <canvas id="monthly-stats-chart"></canvas>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <h3><i class="fas fa-tags"></i> Por categorías</h3>
+            <div class="chart-container">
+              <canvas id="categories-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <script src="js/biblio-script.js"></script>
 </body>
 </html>
