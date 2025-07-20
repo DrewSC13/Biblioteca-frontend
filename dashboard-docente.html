@@ -1,20 +1,226 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Panel Docente</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    body {
-      background-image: url("img/fondo-docente.jpg");
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Panel Docente</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel+Decorative&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/docente-styles.css">
 </head>
-<body>
-  <div class="dashboard">
-    <h1>Bienvenido Docente</h1>
-    <p>Puede consultar libros, calificarlos y gestionar recursos.</p>
-    <a href="index.html">Cerrar sesión</a>
-  </div>
+<body class="docente-dashboard">
+    <!-- Header -->
+    <header class="gothic-header">
+        <div class="header-content">
+            <h1><i class="fas fa-book-dead"></i> Biblioteca Virtual Arcana</h1>
+            <div class="user-info">
+                <img src="img/avatar-docente.jpg" alt="Avatar Docente" class="avatar">
+                <span id="nombreDocente">Dr. [Nombre]</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú Lateral -->
+    <nav class="gothic-sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-scroll sidebar-icon"></i>
+            <h3>Menú Docente</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <button id="btnPanel" class="sidebar-btn active" onclick="cargarSeccion('panel')">
+                    <i class="fas fa-scroll"></i>
+                    <span>Mi Panel</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li>
+                <button id="btnCatalogo" class="sidebar-btn" onclick="cargarSeccion('catalogo')">
+                    <i class="fas fa-book-open"></i>
+                    <span>Catálogo</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li>
+                <button id="btnPrestamos" class="sidebar-btn" onclick="cargarSeccion('prestamos')">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Préstamos</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li>
+                <button id="btnReservas" class="sidebar-btn" onclick="cargarSeccion('reservas')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Reservas</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li>
+                <button id="btnPerfil" class="sidebar-btn" onclick="cargarSeccion('perfil')">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Perfil</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+            <li class="logout-item">
+                <button id="btnSalir" class="sidebar-btn" onclick="cerrarSesion()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Salir</span>
+                    <i class="fas fa-chevron-right indicator"></i>
+                </button>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="candle-effect"></div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="main-content" id="mainContent">
+        <!-- Sección Panel -->
+        <main class="gothic-main" id="seccionPanel">
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Bienvenido, Sabio Académico</h2>
+                    <p>Tu conocimiento en <span id="especialidadDocente">[Especialidad]</span> ilumina nuestros pasillos.</p>
+                    <div class="academic-info">
+                        <p><i class="fas fa-graduation-cap"></i> <strong>Grado:</strong> <span id="gradoDocente">[Grado Académico]</span></p>
+                        <p><i class="fas fa-university"></i> <strong>Carrera:</strong> <span id="carreraDocente">[Carrera]</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recommended-books">
+                <h2><i class="fas fa-star"></i> Tu Libros Favoritos</h2>
+                <div class="books-grid" id="librosEspecialidad"></div>
+            </section>
+
+            <section class="quick-access">
+                <h2><i class="fas fa-tachometer-alt"></i> Acceso Rápido</h2>
+                <div class="quick-access-grid">
+                    <div class="quick-card" onclick="cargarSeccion('prestamos')">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>Mis Préstamos</h3>
+                        <span id="contadorPrestamos">0 activos</span>
+                    </div>
+                    <div class="quick-card" onclick="cargarSeccion('reservas')">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Mis Reservas</h3>
+                        <span id="contadorReservas">0 pendientes</span>
+                    </div>
+                    <div class="quick-card" onclick="cargarSeccion('catalogo')">
+                        <i class="fas fa-search"></i>
+                        <h3>Buscar Libros</h3>
+                        <span>Explorar catálogo</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sección Catálogo -->
+        <main class="gothic-main" id="seccionCatalogo" style="display:none;">
+            <h2><i class="fas fa-book-open"></i> Catálogo Completo</h2>
+            <div class="search-bar">
+                <input type="text" id="busquedaLibros" placeholder="Buscar por título, autor o categoría...">
+                <button class="gothic-button" onclick="buscarLibros()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filters">
+                <select class="gothic-select" id="filtroCategoria">
+                    <option value="">Todas las categorías</option>
+                    <option>Novela</option>
+                    <option>Teoría</option>
+                    <option>Investigación</option>
+                </select>
+                <select class="gothic-select" id="filtroOrden">
+                    <option value="titulo">Ordenar por: Título (A-Z)</option>
+                    <option value="autor">Autor</option>
+                    <option value="fecha">Más recientes</option>
+                </select>
+            </div>
+            <div class="books-grid" id="catalogoCompleto"></div>
+        </main>
+
+        <!-- Sección Préstamos -->
+        <main class="gothic-main" id="seccionPrestamos" style="display:none;">
+            <h2><i class="fas fa-exchange-alt"></i> Mis Préstamos</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="filtrarPrestamos('activos')">Activos</button>
+                <button class="tab-btn" onclick="filtrarPrestamos('historial')">Historial</button>
+                <button class="tab-btn" onclick="filtrarPrestamos('vencidos')">Vencidos</button>
+            </div>
+            <div class="loans-table">
+                <table id="tablaPrestamos">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Fecha Préstamo</th>
+                            <th>Fecha Devolución</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- Sección Reservas -->
+        <main class="gothic-main" id="seccionReservas" style="display:none;">
+            <h2><i class="fas fa-calendar-check"></i> Mis Reservas</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="filtrarReservas('pendientes')">Pendientes</button>
+                <button class="tab-btn" onclick="filtrarReservas('completadas')">Completadas</button>
+                <button class="tab-btn" onclick="filtrarReservas('canceladas')">Canceladas</button>
+            </div>
+            <div class="reservations-grid" id="gridReservas"></div>
+        </main>
+
+        <!-- Sección Perfil -->
+        <main class="gothic-main" id="seccionPerfil" style="display:none;">
+            <h2><i class="fas fa-user-graduate"></i> Mi Perfil</h2>
+            <div class="profile-form">
+                <div class="form-row">
+                    <div class="avatar-upload">
+                        <img src="img/avatar-docente.jpg" alt="Avatar" id="avatarPreview">
+                        <label for="avatarInput" class="gothic-button">
+                            <i class="fas fa-camera"></i> Cambiar imagen
+                        </label>
+                        <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre"><i class="fas fa-user"></i> Nombre Completo</label>
+                        <input type="text" id="nombre" class="gothic-input" value="Camila Morales">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="especialidad"><i class="fas fa-atom"></i> Especialidad</label>
+                    <input type="text" id="especialidad" class="gothic-input" value="Inteligencia Artificial">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="grado"><i class="fas fa-graduation-cap"></i> Grado Académico</label>
+                        <select id="grado" class="gothic-select">
+                            <option>PhD</option>
+                            <option>Master</option>
+                            <option>Licenciatura</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="carrera"><i class="fas fa-university"></i> Carrera</label>
+                        <input type="text" id="carrera" class="gothic-input" value="Ingeniería de Sistemas">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="correo"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                    <input type="email" id="correo" class="gothic-input" value="camila.morales@uni.edu">
+                </div>
+                <button class="gothic-button save-btn"><i class="fas fa-save"></i> Guardar Cambios</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="js/docente-script.js"></script>
 </body>
 </html>
