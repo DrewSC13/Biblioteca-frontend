@@ -1,20 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Panel Usuario Externo</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    body {
-      background-image: url("img/fondo-externo.jpg");
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Usuario Externo</title>
+    <link rel="stylesheet" href="css/externo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="dashboard">
-    <h1>Bienvenido Visitante</h1>
-    <p>Puede consultar libros públicos. Acceso limitado.</p>
-    <a href="index.html">Cerrar sesión</a>
-  </div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-section">
+                <div class="avatar">
+                    <img src="img/avatar-biblio.jpg" alt="Avatar">
+                </div>
+                <h3 id="nombre-usuario">Usuario Externo</h3>
+                <p id="matricula-usuario">Matrícula: EXT001</p>
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li class="active"><a href="#inicio"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#libros"><i class="fas fa-book"></i> Catálogo de Libros</a></li>
+                    <li><a href="#descargas"><i class="fas fa-download"></i> Mis Descargas</a></li>
+                    <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li><a href="#ayuda"><i class="fas fa-question-circle"></i> Ayuda</a></li>
+                    <li><a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+
+            <div class="library-info">
+                <p>Biblioteca Virtual</p>
+                <p>Acceso Externo</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Bienvenido, <span id="nombre-header">Usuario Externo</span></h1>
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar libros...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+            </header>
+
+            <section id="inicio" class="content-section active">
+                <div class="welcome-banner">
+                    <h2>Acceso Limitado a la Biblioteca Virtual</h2>
+                    <p>Como usuario externo, puedes acceder a libros de dominio público y realizar descargas.</p>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Libros Disponibles</h3>
+                        <p id="total-libros">18</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-download"></i>
+                        <h3>Mis Descargas</h3>
+                        <p id="total-descargas">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Acceso Válido Hasta</h3>
+                        <p>31/12/2025</p>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> Actividad Reciente</h3>
+                    <div class="activity-list" id="actividad-reciente">
+                        <!-- Actividad se cargará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="libros" class="content-section">
+                <h2><i class="fas fa-book"></i> Catálogo de Libros</h2>
+                <div class="filters">
+                    <select id="filtro-categoria">
+                        <option value="">Todas las categorías</option>
+                        <option value="Novela">Novela</option>
+                        <option value="Distopía">Distopía</option>
+                        <option value="Poesía">Poesía</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Fábula">Fábula</option>
+                        <option value="Teatro">Teatro</option>
+                        <option value="Experimental">Experimental</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Misterio">Misterio</option>
+                        <option value="Épico">Épico</option>
+                    </select>
+                    <select id="filtro-formato">
+                        <option value="">Todos los formatos</option>
+                        <option value="PDF">PDF</option>
+                        <option value="EPUB">EPUB</option>
+                    </select>
+                    <button id="btn-filtrar">Filtrar</button>
+                </div>
+
+                <div class="books-grid" id="lista-libros">
+                    <!-- Libros se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <section id="descargas" class="content-section">
+                <h2><i class="fas fa-download"></i> Mis Descargas</h2>
+                <div class="downloads-list" id="lista-descargas">
+                    <!-- Descargas se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <section id="configuracion" class="content-section">
+                <h2><i class="fas fa-cog"></i> Configuración de Cuenta</h2>
+                <form id="form-configuracion">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">Correo electrónico:</label>
+                        <input type="email" id="correo" name="correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono">
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasenia">Nueva contraseña:</label>
+                        <input type="password" id="contrasenia" name="contrasenia">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmar-contrasenia">Confirmar contraseña:</label>
+                        <input type="password" id="confirmar-contrasenia" name="confirmar-contrasenia">
+                    </div>
+                    <button type="submit" class="btn-guardar">Guardar Cambios</button>
+                </form>
+            </section>
+
+            <section id="ayuda" class="content-section">
+                <h2><i class="fas fa-question-circle"></i> Ayuda y Soporte</h2>
+                <div class="help-content">
+                    <div class="help-section">
+                        <h3>Preguntas Frecuentes</h3>
+                        <div class="faq-item">
+                            <h4>¿Qué libros puedo descargar como usuario externo?</h4>
+                            <p>Como usuario externo, solo puedes acceder a libros marcados como "libre" en el sistema. Los libros con derechos reservados no están disponibles para descarga.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>¿Cómo puedo renovar mi acceso como usuario externo?</h4>
+                            <p>Debes contactar al administrador de la biblioteca para solicitar una extensión de tu acceso.</p>
+                        </div>
+                    </div>
+                    <div class="help-section">
+                        <h3>Contacto</h3>
+                        <p>Para asistencia adicional, por favor contacta al equipo de soporte:</p>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> soporte@biblioteca.edu</li>
+                            <li><i class="fas fa-phone"></i> +123 456 7890</li>
+                            <li><i class="fas fa-clock"></i> Lunes a Viernes, 8:00 - 17:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/externo-script.js"></script>
 </body>
 </html>
